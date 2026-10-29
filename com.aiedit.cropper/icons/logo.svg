@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="g" x1="10%" y1="0%" x2="95%" y2="100%">
+      <stop offset="0%" stop-color="#56B8FF"/>
+      <stop offset="48%" stop-color="#5575FF"/>
+      <stop offset="100%" stop-color="#B45BFF"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".98"/>
+      <stop offset="100%" stop-color="#DCE6FF" stop-opacity=".85"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="30" fill="#171A29"/>
+  <rect x="9" y="9" width="110" height="110" rx="27" fill="none" stroke="url(#g)" stroke-width="3"/>
+  <path d="M30 85V43c0-5 4-9 9-9h22c17 0 27 10 27 25S78 84 61 84H47v1" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M48 66h13c6 0 10-3 10-8s-4-8-10-8H48z" fill="url(#shine)"/>
+  <path d="M91 22l4.2 10.8L106 37l-10.8 4.2L91 52l-4.2-10.8L76 37l10.8-4.2z" fill="#FFFFFF"/>
+  <path d="M102 59l2.4 6.1 6.1 2.4-6.1 2.4-2.4 6.1-2.4-6.1-6.1-2.4 6.1-2.4z" fill="#8BD9FF"/>
+  <circle cx="35" cy="100" r="3" fill="#8BD9FF"/>
+  <circle cx="45" cy="100" r="3" fill="#A58BFF"/>
+</svg>

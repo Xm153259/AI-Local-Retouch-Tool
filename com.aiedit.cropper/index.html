@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小朦AI 局部编辑助手</title>
+<style>
+/* ==========================================
+   基础与变量配置
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+:root {
+  --bg-main: #0f1117;
+  --panel-bg: rgba(26, 29, 39, 0.75);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-border-glow: rgba(139, 92, 246, 0.25);
+  
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  /* 渐变色彩 */
+  --primary-grad: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --primary-grad-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%);
+  --primary-shadow: rgba(124, 58, 237, 0.35);
+  
+  --secondary-grad: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --secondary-grad-hover: linear-gradient(135deg, #047857 0%, #059669 100%);
+  --secondary-shadow: rgba(16, 185, 129, 0.25);
+
+  --status-bg: rgba(17, 24, 39, 0.8);
+  --status-border: rgba(255, 255, 255, 0.06);
+  --success-color: #10b981;
+  --error-color: #ef4444;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 65%),
+    radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  overflow: auto;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 14px;
+}
+
+/* ==========================================
+   容器卡片 (Glassmorphism)
+   ========================================== */
+.container {
+  width: 100%;
+  max-width: 380px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 18px 16px 14px;
+  box-shadow: 
+    0 10px 30px -5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.container:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ==========================================
+   品牌 Header
+   ========================================== */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.brand-logo-wrap {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+.brand-logo {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.brand-copy {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.brand-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: linear-gradient(120deg, #ffffff 30%, #c7d2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.brand-subtitle {
+  margin-top: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #818cf8;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* ==========================================
+   描述文本
+   ========================================== */
+.desc {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  font-size: 11.5px;
+  padding: 0 2px;
+}
+
+/* ==========================================
+   按钮区域与样式
+   ========================================== */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 调整间距适应中间文本 */
+  margin-bottom: 14px;
+}
+
+/* 两个按钮中间的提示文本样式 */
+.action-divider-text {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+.action {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: var(--primary-grad);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--primary-shadow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.action::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left 0.6s ease;
+}
+
+.action:hover::before {
+  left: 100%;
+}
+
+.action:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px var(--primary-shadow);
+  border-color: rgba(255, 255, 255, 0.3);
+  filter: brightness(1.05);
+}
+
+.action:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--primary-shadow);
+  filter: brightness(0.95);
+}
+
+.action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 次要按钮 */
+.action.secondary {
+  background: var(--secondary-grad);
+  box-shadow: 0 4px 14px var(--secondary-shadow);
+}
+
+.action.secondary:hover {
+  box-shadow: 0 6px 20px var(--secondary-shadow);
+}
+
+.icon-wrap {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+}
+
+.action-label {
+  line-height: 1.4;
+  flex: 0 1 auto;
+}
+
+/* ==========================================
+   状态栏与呼吸指示灯
+   ========================================== */
+.status {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 38px;
+  padding: 10px 12px;
+  border: 1px solid var(--status-border);
+  border-radius: 8px;
+  background: var(--status-bg);
+  color: #d1d5db;
+  line-height: 1.5;
+  font-size: 11px;
+  word-break: break-all;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.status-dot {
+  position: relative;
+  top: 4px;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background-color: var(--success-color);
+  box-shadow: 0 0 8px var(--success-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.status-dot::after {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background-color: var(--success-color);
+  opacity: 0.4;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  50% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
+/* 状态栏 Error 状态 override */
+.status.error {
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(30, 15, 20, 0.6);
+}
+
+.status.error .status-dot {
+  background-color: var(--error-color);
+  box-shadow: 0 0 8px var(--error-color);
+}
+
+.status.error .status-dot::after {
+  background-color: var(--error-color);
+}
+
+.status-text {
+  flex: 1;
+}
+
+/* ==========================================
+   提示与页脚
+   ========================================== */
+.hint {
+  margin-top: 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid rgba(129, 140, 248, 0.4);
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 10.5px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.footer > span {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.footer-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #6366f1;
+}
+
+svg {
+  display: block;
+}
+
+/* 小屏幕适配 */
+@media (max-width: 280px) {
+  body { padding: 8px; }
+  .container { padding: 12px 10px; }
+  .brand-title { font-size: 12px; }
+  .action { font-size: 11px; padding: 6px 8px; gap: 6px; }
+  .actions { gap: 10px; }
+  .footer { font-size: 9px; letter-spacing: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header 区域 -->
+  <header class="brand">
+    <div class="brand-logo-wrap">
+      <!-- 矢量 Logo 图标 -->
+      <svg class="brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 4L26.3923 10V22L16 28L5.6077 22V10L16 4Z" stroke="url(#logo_grad)" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M16 10L21.1962 13V19L16 22L10.8038 19V13L16 10Z" fill="url(#logo_grad)"/>
+        <defs>
+          <linearGradient id="logo_grad" x1="5.6" y1="4" x2="26.4" y2="28" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#818CF8"/>
+            <stop offset="1" stop-color="#C084FC"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="brand-copy">
+      <h1 class="brand-title">小朦AI 局部编辑助手</h1>
+      <div class="brand-subtitle">AI LOCAL RETOUCH TOOL</div>
+    </div>
+  </header>
+
+  <p class="desc">先用矩形选框工具框选需要交给 AI 修改的区域，然后导出切片。</p>
+
+  <!-- 操作按钮 -->
+  <div class="actions">
+    <button id="btnExport" class="action" type="button">
+      <span class="icon-wrap" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M8 3.5H4.5A1.5 1.5 0 0 0 3 5v3.5M16 3.5h3.5A1.5 1.5 0 0 1 21 5v3.5M21 15.5V19a1.5 1.5 0 0 1-1.5 1.5H16M8 20.5H4.5A1.5 1.5 0 0 1 3 19v-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="action-label">1. 导出选区 PNG 并裁切</span>
+    </button>
+
+    <!-- 两个按钮之间的自定义文字 -->
+    <div class="action-divider-text">AI 软件处理完成后，将生成的图片拖入 PS</div>
+
+    <button id="btnRestore" class="action secondary" type="button">
+      <span class="icon-wrap" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M4 10a8 8 0 1 1 1.5 7.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M4 4.5V10h5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 12.5l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="action-label">2. 恢复裁切前的画布范围</span>
+    </button>
+  </div>
+
+  <!-- 动态状态栏 -->
+  <div id="status" class="status" role="status" aria-live="polite">
+    <span class="status-dot"></span>
+    <span class="status-text">就绪。导出的 PNG 与坐标记录默认保存到桌面。</span>
+  </div>
+
+  <!-- 提示与页脚 -->
+  <div class="hint">提示：1如何使用？先用矩形选框工具框选需要交给 AI 修改的区域，然后导出，使用AI软件处理后，拖入照片重合，再点击恢复裁切前的画布范围，AI修改后的图片建议保持与导出切片相同的像素比例。2、低像素照片建议先扩展图像大小。</div>
+  
+  <footer class="footer">
+    <span class="footer-dot"></span>
+    <span>小朦AI · Photoshop CEP 扩展</span>
+    <span>联系邮箱：905679797@qq.com</span>
+  </footer>
+</div>
+
+<script src="./CSInterface.js"></script>
+<script>
+(function(){
+ var cs = new CSInterface();
+ var statusEl = document.getElementById("status");
+ var b1 = document.getElementById("btnExport");
+ var b2 = document.getElementById("btnRestore");
+
+ function status(msg, err){
+  // 保持原有状态更新逻辑，兼顾全新的 DOM 结构
+  var textEl = statusEl.querySelector('.status-text');
+  if(textEl) {
+    textEl.textContent = msg;
+  } else {
+    statusEl.textContent = msg;
+  }
+  statusEl.className = err ? "status error" : "status";
+ }
+
+ function run(script, busy, success){
+  b1.disabled = b2.disabled = true;
+  status(busy, false);
+  cs.evalScript(script, function(result){
+   b1.disabled = b2.disabled = false;
+   if(!result || result === "undefined") status("脚本没有返回结果，请确认 Photoshop 文档及 CEP 扩展状态。", true);
+   else if(result.indexOf("ERR:") === 0) status(result.substring(4), true);
+   else if(result.indexOf("CANCEL:") === 0) status(result.substring(7), false);
+   else status(success + (result !== "SUCCESS" ? result : ""), false);
+  });
+ }
+
+ b1.addEventListener("click", function(){
+  run("exportSelectionAndCrop()", "正在导出切片并记录坐标……", "完成：桌面文件 ");
+ });
+
+ b2.addEventListener("click", function(){
+  run("restoreOriginalSize()", "正在恢复画布范围……", "恢复完成。");
+ });
+}());
+</script>
+</body>
+</html>

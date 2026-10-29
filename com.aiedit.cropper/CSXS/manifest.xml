@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="7.0" ExtensionBundleId="com.aiedit.cropper" ExtensionBundleVersion="1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList><Extension Id="com.aiedit.cropper.panel" Version="1.0.0"/></ExtensionList>
+  <ExecutionEnvironment>
+    <HostList><Host Name="PHXS" Version="[19.0,99.9]"/></HostList>
+    <LocaleList><Locale Code="All"/></LocaleList>
+    <RequiredRuntimeList><RequiredRuntime Name="CSXS" Version="9.0"/></RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.aiedit.cropper.panel"><DispatchInfo>
+      <Resources><MainPath>./index.html</MainPath><ScriptPath>./hostscript.jsx</ScriptPath></Resources>
+      <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+      <UI>
+        <Type>Panel</Type>
+        <Menu>小朦AI局部编辑与恢复</Menu>
+        <Geometry>
+          <Size><Width>320</Width><Height>360</Height></Size>
+          <MinSize><Width>220</Width><Height>190</Height></MinSize>
+        </Geometry>
+        <Icons>
+          <Icon Type="Normal">./icons/panel-normal.png</Icon>
+          <Icon Type="RollOver">./icons/panel-rollover.png</Icon>
+          <Icon Type="DarkNormal">./icons/panel-dark.png</Icon>
+          <Icon Type="DarkRollOver">./icons/panel-dark-rollover.png</Icon>
+        </Icons>
+      </UI>
+    </DispatchInfo></Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
