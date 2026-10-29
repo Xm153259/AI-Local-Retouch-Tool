@@ -2,14 +2,14 @@
 
 
 
-## 📖 插件简介
+## 📖 插件简介Plugin Introduction
 
 
 
-小朦AI局部编辑助手 是一款专为 Photoshop (PS) 设计的高效辅助扩展插件。它可以帮助设计师快速切出图像局部，无缝配合外部 AI 图像处理软件（如ChatGPT、豆包、Gemini、 Midjourney、Stable Diffusion、ComfyUI等）进行精准局部重绘或修图，并实现一键恢复画布与精确贴合。
+小朦AI局部编辑助手 是一款专为 Photoshop (PS) 设计的高效辅助扩展插件。它可以帮助设计师快速切出图像局部，无缝配合外部 AI 图像处理软件（如ChatGPT、豆包、Gemini、 Midjourney、Stable Diffusion、ComfyUI等）进行精准局部重绘或修图，并实现一键恢复画布与精确贴合。（Xiaomeng AI Local Edit Assistant is an efficient auxiliary plugin for Adobe Photoshop. It simplifies localized image extraction, allowing seamless integration with external AI image processing platforms (e.g., ChatGPT, Doubao, Gemini, Midjourney, Stable Diffusion, ComfyUI) for targeted repainting and retouching. Additionally, it offers one-click canvas recovery and accurate layer positioning.）
 
 
-🛠️ 安装操作流程
+## 🛠️ 安装操作流程Installation Steps
 
 ## Windows 安装
 1. 关闭 Photoshop。
@@ -24,7 +24,7 @@
 
 
 
-## 🛠️ 快速操作流程
+## 🛠️ 快速操作流程 Quick Start Guide
 
 
 
@@ -106,6 +106,42 @@ AI 处理完成后，将新生成的图片保存/下载到本地。
 
 AI 生成的局部图片将精确对齐到原图对应的位置，完成无缝拼合。
 
+Step 1: Selection & Slice Export
+Open the image you wish to edit in Photoshop.
+
+Use the default Marquee Tool (M) in Photoshop to select the area you want AI to edit or repaint.
+
+Click the purple button on the panel:
+
+👉 1. Export Selection PNG & Crop
+
+Actions & Results:
+
+The plugin automatically exports the selected area as a lossless PNG image.
+
+By default, the file is saved directly to your Desktop.
+
+It records the exact coordinates of the selection relative to the original image and automatically crops the canvas for quick preview.
+
+Step 2: AI Tool Processing
+Open your preferred AI image generator or local inpainting tool.
+
+Import the exported PNG image from your Desktop into the AI software, enter your prompts, and generate or retouch the image.
+
+Once the AI processing is complete, save or download the new image locally.
+
+Step 3: Restore Canvas & Import Result
+Drag and drop the AI-generated image directly back into your Photoshop canvas.
+
+Click the green button on the panel:
+
+👉 2. Restore Canvas Before Cropping
+
+Actions & Results:
+
+The canvas automatically resets to its original overall dimensions and aspect ratio.
+
+The AI-generated snippet seamlessly snaps to its exact original position on the canvas for flawless alignment.
 
 
 ## 💡 提示与状态说明
