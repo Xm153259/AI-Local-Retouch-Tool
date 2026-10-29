@@ -6,7 +6,7 @@
 
 
 
-小朦AI局部编辑助手 是一款专为 Photoshop (PS) 设计的高效辅助扩展插件。它可以帮助设计师快速切出图像局部，无缝配合外部 AI 图像处理软件（如ChatGPT、豆包、Gemini、 Midjourney、Stable Diffusion、ComfyUI等）进行精准局部重绘或修图，并实现一键恢复画布与精确贴合。（Xiaomeng AI Local Edit Assistant is an efficient auxiliary plugin for Adobe Photoshop. It simplifies localized image extraction, allowing seamless integration with external AI image processing platforms (e.g., ChatGPT, Doubao, Gemini, Midjourney, Stable Diffusion, ComfyUI) for targeted repainting and retouching. Additionally, it offers one-click canvas recovery and accurate layer positioning.）
+小朦AI局部编辑助手 是一款专为 Photoshop (PS) 设计的高效辅助扩展插件。它可以帮助设计师快速切出图像局部，无缝配合外部 AI 图像处理软件（如ChatGPT、豆包、Gemini、 Midjourney、Stable Diffusion、ComfyUI等）进行精准局部重绘或修图，并实现一键恢复画布与精确贴合。（Xiaomeng AI Local Retouch Tool is an efficient auxiliary plugin for Adobe Photoshop. It simplifies localized image extraction, allowing seamless integration with external AI image processing platforms (e.g., ChatGPT, Doubao, Gemini, Midjourney, Stable Diffusion, ComfyUI) for targeted repainting and retouching. Additionally, it offers one-click canvas recovery and accurate layer positioning.）
 
 
 ## 🛠️ 安装操作流程Installation Steps
