@@ -14,7 +14,7 @@
 ## Windows 安装
 1. 关闭 Photoshop。
 2. 将 `com.aiedit.cropper` 文件夹复制到：
-   `C:\Adobe Photoshop CC 版本号\Required\CEP\extensions\`
+   `Adobe Photoshop CC 版本号\Required\CEP\extensions\`
 3. 重启 Photoshop，在 **窗口 > 扩展（旧版）** 中查找 **小朦AI 局部编辑与恢复**。
 
 ## macOS 安装
