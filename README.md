@@ -1,8 +1,8 @@
-小朦AI 局部编辑助手（AI Local Retouch Tool）使用指南
+## 小朦AI 局部编辑助手（AI Local Retouch Tool）使用指南
 
 
 
-📖 插件简介
+## 📖 插件简介
 
 
 
@@ -15,7 +15,7 @@
 1. 关闭 Photoshop。
 2. 将 `com.aiedit.cropper` 文件夹复制到：
    `C:\Adobe Photoshop CC 版本号\Required\CEP\extensions\`
-3. 重启 Photoshop，在 **窗口 > 扩展（旧版）** 中查找 **小懋AI 局部编辑与恢复**。
+3. 重启 Photoshop，在 **窗口 > 扩展（旧版）** 中查找 **小朦AI 局部编辑与恢复**。
 
 ## macOS 安装
 将 `com.aiedit.cropper` 文件夹复制到：
@@ -24,7 +24,7 @@
 
 
 
-🛠️ 快速操作流程
+## 🛠️ 快速操作流程
 
 
 
@@ -108,7 +108,7 @@ AI 生成的局部图片将精确对齐到原图对应的位置，完成无缝�
 
 
 
-💡 提示与状态说明
+## 💡 提示与状态说明
 
 
 
@@ -120,7 +120,7 @@ AI 生成的局部图片将精确对齐到原图对应的位置，完成无缝�
 
 
 
-❓ 常见问题 (FAQ)
+## ❓ 常见问题 (FAQ)
 
 
 
